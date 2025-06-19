@@ -1,0 +1,28 @@
+# Etsy API V3 Golang SDK
+
+[Document Etsy v3](https://developers.etsy.com/documentation/reference)
+
+
+## Installation
+
+```
+go get -u github.com/dzt-corp/go-etsy
+```
+
+## Example
+```go
+package main
+
+func main() {
+    clientID:= "<clientID>"
+    clientSecret:= "<clientSecret>"
+    redirectURI:= "<redirectURI>"
+    oauth2 := oauth.NewOAuthClient(clientID, clientSecret,redirectURI)
+	etsyClient, err := client.NewEtsyClient(&client.Config{
+		APIKey:     "<APIKey>",
+		ClientSecret: "<ClientSecret>",
+		RefreshToken: "<RefreshToken>",
+	})
+
+}
+```
