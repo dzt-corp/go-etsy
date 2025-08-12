@@ -74,3 +74,14 @@ func (etsy *EtsyClient) RefreshToken() error {
 	etsy.accessTokenExpiry = time.Now().UTC().Add(time.Duration(resp.ExpiresIn) * time.Second) //set expiration time
 	return nil
 }
+
+func (etsy *EtsyClient) ExchangeCodeForToken(code, codeVerifier string) error {
+	resp, err := etsy.cfg.OAuth.ExchangeCode(code, codeVerifier)
+	if err != nil {
+		return err
+	}
+
+	etsy.accessToken = resp.AccessToken
+	etsy.accessTokenExpiry = time.Now().UTC().Add(time.Duration(resp.ExpiresIn) * time.Second) //set expiration time
+	return nil
+}

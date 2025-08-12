@@ -29,12 +29,11 @@ type AccessTokenResponse struct {
 	Scope        string `json:"scope"`
 }
 
-func NewOAuthClient(clientID, clientSecret, redirectURI string) *OAuthClient {
+func NewOAuthClient(clientID, redirectURI string) *OAuthClient {
 	return &OAuthClient{
-		ClientID:     clientID,
-		ClientSecret: clientSecret,
-		RedirectURI:  redirectURI,
-		HTTPClient:   http.DefaultClient,
+		ClientID:    clientID,
+		RedirectURI: redirectURI,
+		HTTPClient:  http.DefaultClient,
 	}
 }
 
