@@ -86,9 +86,8 @@ func (c *OAuthClient) ExchangeCode(code, codeVerifier string) (*AccessTokenRespo
 	if err != nil {
 		return nil, err
 	}
-	req.SetBasicAuth(c.ClientID, c.ClientSecret)
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
@@ -118,9 +117,8 @@ func (c *OAuthClient) RefreshToken(refreshToken string) (*AccessTokenResponse, e
 	if err != nil {
 		return nil, err
 	}
-	req.SetBasicAuth(c.ClientID, c.ClientSecret)
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	resp, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err

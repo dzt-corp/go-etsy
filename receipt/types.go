@@ -104,8 +104,8 @@ type ReceiptTransaction struct {
 	ShippingMethod    string                   `json:"shipping_method"`
 	ShippingUpgrade   string                   `json:"shipping_upgrade"`
 	ExpectedShipDate  int64                    `json:"expected_ship_date"`
-	BuyerCoupon       int64                    `json:"buyer_coupon"`
-	ShopCoupon        int64                    `json:"shop_coupon"`
+	BuyerCoupon       float64                  `json:"buyer_coupon"`
+	ShopCoupon        float64                  `json:"shop_coupon"`
 }
 
 type ReceiptRefund struct {

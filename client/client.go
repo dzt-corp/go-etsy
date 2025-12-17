@@ -58,7 +58,7 @@ func (etsy *EtsyClient) AuthorizeRequest(r *http.Request) error {
 			return fmt.Errorf("cannot refresh token. Error: %s", err.Error())
 		}
 	}
-
+	r.Header.Add("x-api-key", etsy.cfg.APIKey)
 	r.Header.Add("Authorization", "Bearer "+etsy.accessToken)
 
 	return nil
