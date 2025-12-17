@@ -177,3 +177,32 @@ type GetListingsByShopReceiptParams struct {
 	Offset   int      `url:"offset,omitempty"`
 	Includes []string `url:"includes,omitempty,comma"`
 }
+
+// ListingImage represents an image associated with a listing
+type ListingImage struct {
+	ListingID       int64  `json:"listing_id"`
+	ListingImageID  int64  `json:"listing_image_id"`
+	HexCode         string `json:"hex_code"`
+	Red             int    `json:"red"`
+	Green           int    `json:"green"`
+	Blue            int    `json:"blue"`
+	Hue             int    `json:"hue"`
+	Saturation      int    `json:"saturation"`
+	Brightness      int    `json:"brightness"`
+	IsBlackAndWhite bool   `json:"is_black_and_white"`
+	CreationTsz     int64  `json:"creation_tsz"`
+	Rank            int    `json:"rank"`
+	Url75x75        string `json:"url_75x75"`
+	Url170x135      string `json:"url_170x135"`
+	Url570xN        string `json:"url_570xN"`
+	UrlFullxFull    string `json:"url_fullxfull"`
+	FullHeight      int    `json:"full_height"`
+	FullWidth       int    `json:"full_width"`
+	AltText         string `json:"alt_text"`
+}
+
+// ListingImagesResponse is the response body for GetListingImages
+type ListingImagesResponse struct {
+	Count   int            `json:"count"`
+	Results []ListingImage `json:"results"`
+}

@@ -112,6 +112,9 @@ type ShopListingAPI interface {
 	GetListingsByListingIds(ctx context.Context, params *GetListingsByListingIdsParams) (*ListingsResponse, error)
 	GetListingsByShopSectionId(ctx context.Context, shopID, shopSectionID int64, params *GetListingsByShopSectionIdParams) (*ListingsResponse, error)
 	GetListingsByShopReceipt(ctx context.Context, shopID, receiptID int64, params *GetListingsByShopReceiptParams) (*ListingsResponse, error)
+
+	// GetListingImages retrieves all images for a specific listing
+	GetListingImages(ctx context.Context, listingID int64) (*ListingImagesResponse, error)
 }
 
 // ==========================================
@@ -186,6 +189,58 @@ func (c *Client) GetListingsByShopSectionId(ctx context.Context, shopID, shopSec
 func (c *Client) GetListingsByShopReceipt(ctx context.Context, shopID, receiptID int64, params *GetListingsByShopReceiptParams) (*ListingsResponse, error) {
 	path := fmt.Sprintf("/v3/application/shops/%d/receipts/%d/listings", shopID, receiptID)
 	return c.doRequestList(ctx, "GET", path, nil, params)
+}
+
+// GetListingImages fetches the images for a specific listing
+// GET /v3/application/listings/{listing_id}/images
+// https://developers.etsy.com/documentation/reference#operation/getListingImages
+func (c *Client) GetListingImages(ctx context.Context, listingID int64) (*ListingImagesResponse, error) {
+	path := fmt.Sprintf("/v3/application/listings/%d/images", listingID)
+
+	// Reuse the doRequestList logic, but we need to cast the result to ListingImagesResponse.
+	// Since doRequestList is hardcoded to return *ListingsResponse (listing objects),
+	// we need a specific helper for Images or a generic request handler.
+	// Below is a standalone implementation for clarity:
+
+	req, err := c.newRequest("GET", path, nil, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req = req.WithContext(ctx)
+	if c.RequestBefore != nil {
+		if err := c.RequestBefore(ctx, req); err != nil {
+			return nil, err
+		}
+	}
+
+	rsp, err := c.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer rsp.Body.Close()
+
+	if c.ResponseAfter != nil {
+		if err := c.ResponseAfter(ctx, rsp); err != nil {
+			return nil, err
+		}
+	}
+
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if rsp.StatusCode >= 300 {
+		return nil, fmt.Errorf("HTTP error: %s - Body: %s", rsp.Status, string(bodyBytes))
+	}
+
+	var dest ListingImagesResponse
+	if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+		return nil, err
+	}
+
+	return &dest, nil
 }
 
 // ==========================================
